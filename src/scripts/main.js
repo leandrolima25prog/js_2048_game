@@ -1,6 +1,6 @@
 'use strict';
 
-const Game = require('../modules/Game.class');
+const Game = window.Game;
 
 // =======================
 // ELEMENTOS DO DOM
@@ -74,7 +74,7 @@ function updateMessages() {
 startBtn.addEventListener('click', () => {
   const gameStatus = game.getStatus();
 
-  if (status === 'idle') {
+  if (gameStatus === 'idle') {
     game.start();
     startBtn.textContent = 'Restart';
     startBtn.classList.remove('start');
@@ -94,26 +94,31 @@ document.addEventListener('keydown', (e) => {
 
   if (gameStatus !== 'playing') {
     return;
+  }
 
   switch (e.key) {
     case 'ArrowLeft':
       game.moveLeft();
       break;
+
     case 'ArrowRight':
       game.moveRight();
       break;
+
     case 'ArrowUp':
       game.moveUp();
       break;
+
     case 'ArrowDown':
       game.moveDown();
       break;
+
     default:
       return;
   }
 
   render();
-};
+});
 
 // =======================
 // INICIAL
