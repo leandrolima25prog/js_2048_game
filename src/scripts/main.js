@@ -1,10 +1,11 @@
 'use strict';
 
-const Game = window.Game;
+const { Game } = window;
 
-// =======================
-// ELEMENTOS DO DOM
-// =======================
+window.Game = Game;
+
+const game = new Game();
+
 const scoreEl = document.querySelector('.game-score');
 const startBtn = document.querySelector('.button');
 const cells = document.querySelectorAll('.field-cell');
@@ -13,23 +14,18 @@ const messageStart = document.querySelector('.message-start');
 const messageWin = document.querySelector('.message-win');
 const messageLose = document.querySelector('.message-lose');
 
-// =======================
-// JOGO
-// =======================
-const game = new Game();
-
-// =======================
-// RENDERIZA TABULEIRO
-// =======================
 function render() {
   const state = game.getState();
+
+  if (!state) {
+    return;
+  }
 
   const flat = state.flat();
 
   cells.forEach((cell, i) => {
     const value = flat[i];
 
-    // limpa classes antigas
     cell.className = 'field-cell';
 
     if (value) {
@@ -41,13 +37,9 @@ function render() {
   });
 
   scoreEl.textContent = game.getScore();
-
   updateMessages();
 }
 
-// =======================
-// MENSAGENS
-// =======================
 function updateMessages() {
   const gameStatus = game.getStatus();
 
@@ -68,9 +60,6 @@ function updateMessages() {
   }
 }
 
-// =======================
-// START / RESTART BOTÃO
-// =======================
 startBtn.addEventListener('click', () => {
   const gameStatus = game.getStatus();
 
@@ -86,9 +75,6 @@ startBtn.addEventListener('click', () => {
   render();
 });
 
-// =======================
-// TECLADO
-// =======================
 document.addEventListener('keydown', (e) => {
   const gameStatus = game.getStatus();
 
@@ -120,7 +106,4 @@ document.addEventListener('keydown', (e) => {
   render();
 });
 
-// =======================
-// INICIAL
-// =======================
 render();

@@ -3,8 +3,7 @@
 class Game {
   constructor(initialState) {
     this.initialState =
-      initialState ||
-      Array.from({ length: 4 }, () => Array(4).fill(0));
+      initialState || Array.from({ length: 4 }, () => Array(4).fill(0));
 
     this.state = JSON.parse(JSON.stringify(this.initialState));
     this.score = 0;
@@ -32,7 +31,9 @@ class Game {
   // ======================
 
   start() {
-    if (this.status === 'playing') return;
+    if (this.status === 'playing') {
+      return;
+    }
 
     this.status = 'playing';
     this.state = this.createEmptyBoard();
@@ -53,7 +54,9 @@ class Game {
   // ======================
 
   moveLeft() {
-    if (this.status !== 'playing') return false;
+    if (this.status !== 'playing') {
+      return false;
+    }
 
     const oldState = JSON.stringify(this.state);
 
@@ -61,13 +64,17 @@ class Game {
 
     const changed = oldState !== JSON.stringify(this.state);
 
-    if (changed) this.afterMove();
+    if (changed) {
+      this.afterMove();
+    }
 
     return changed;
   }
 
   moveRight() {
-    if (this.status !== 'playing') return false;
+    if (this.status !== 'playing') {
+      return false;
+    }
 
     this.state.forEach((row) => row.reverse());
 
@@ -79,7 +86,9 @@ class Game {
   }
 
   moveUp() {
-    if (this.status !== 'playing') return false;
+    if (this.status !== 'playing') {
+      return false;
+    }
 
     this.transpose();
 
@@ -91,7 +100,9 @@ class Game {
   }
 
   moveDown() {
-    if (this.status !== 'playing') return false;
+    if (this.status !== 'playing') {
+      return false;
+    }
 
     this.transpose();
     this.state.forEach((row) => row.reverse());
@@ -153,18 +164,19 @@ class Game {
   addRandomTile() {
     const empty = [];
 
-    for (let row = 0; row < 4; row++) {
-      for (let col = 0; col < 4; col++) {
-        if (this.state[row][col] === 0) {
-          empty.push({ row, col });
+    for (let rIndex = 0; rIndex < 4; rIndex++) {
+      for (let cIndex = 0; cIndex < 4; cIndex++) {
+        if (this.state[rIndex][cIndex] === 0) {
+          empty.push({ row: rIndex, col: cIndex });
         }
       }
     }
 
-    if (!empty.length) return;
+    if (!empty.length) {
+      return;
+    }
 
-    const { row, col } =
-      empty[Math.floor(Math.random() * empty.length)];
+    const { row, col } = empty[Math.floor(Math.random() * empty.length)];
 
     this.state[row][col] = Math.random() < 0.9 ? 2 : 4;
   }
@@ -182,10 +194,12 @@ class Game {
       for (let col = 0; col < 4; col++) {
         if (this.state[row][col] === 2048) {
           this.status = 'win';
+
           return true;
         }
       }
     }
+
     return false;
   }
 
@@ -194,11 +208,17 @@ class Game {
       for (let col = 0; col < 4; col++) {
         const cur = this.state[row][col];
 
-        if (cur === 0) return true;
+        if (cur === 0) {
+          return true;
+        }
 
-        if (col < 3 && cur === this.state[row][col + 1]) return true;
+        if (col < 3 && cur === this.state[row][col + 1]) {
+          return true;
+        }
 
-        if (row < 3 && cur === this.state[row + 1][col]) return true;
+        if (row < 3 && cur === this.state[row + 1][col]) {
+          return true;
+        }
       }
     }
 
